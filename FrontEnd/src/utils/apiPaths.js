@@ -1,12 +1,11 @@
-export const BASE_URL = "http://localhost:4000";
+export const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const API_PATHS = {
   AUTH: {
     REGISTER: "/api/auth/register",
     LOGIN: "/api/auth/login",
-    POFILE: "/api/auth/profile",
+    PROFILE: "/api/auth/profile", // typo fixed
   },
-
   RESUME: {
     CREATE: "/api/resume",
     GET_ALL: "/api/resume",
@@ -15,7 +14,7 @@ export const API_PATHS = {
     UPLOAD_IMAGES: (id) => `/api/resume/${id}/upload-images`,
     DELETE_RESUME: (id) => `/api/resume/${id}`,
   },
-  image:{
-     UPLOAD_IMAGE:`/api/auth/upload-image`,
-  }
+  IMAGE: {
+    UPLOAD_IMAGE: "/api/auth/upload-image",
+  },
 };

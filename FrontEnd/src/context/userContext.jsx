@@ -19,7 +19,7 @@ const UserProvider = ({ children }) => {
     }
     const fetchUser = async () => {
       try {
-        const response = await axiosInstace.get(API_PATHS.AUTH.POFILE);
+        const response = await axiosInstace.get(API_PATHS.AUTH.PROFILE);
         setUser(response.data);
       } catch (error) {
         console.error("User not authenticated", error);

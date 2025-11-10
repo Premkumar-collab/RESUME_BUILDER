@@ -37,13 +37,21 @@ app.use(
   })
 );
 // CORS configuration
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://resume-builder-tcde.onrender.com"
+];
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://resume-builder-tcde.onrender.com",
-    ],
-    credentials: true,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true
   })
 );
 
