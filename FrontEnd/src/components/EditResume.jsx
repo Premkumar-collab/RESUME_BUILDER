@@ -32,6 +32,8 @@ import {
   EducationDetailsForm,
   ProjectDetailForm,
   SkillsInfoForm,
+  CertificationInfoForm,
+  AdditionalInfoForm,
 } from "../components/Forms";
 
 import RenderResume from "../components/RenderResume";

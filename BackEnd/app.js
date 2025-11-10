@@ -15,7 +15,18 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // Security headers
-app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "https://cdnjs.cloudflare.com"],
+      styleSrc: ["'self'", "https://cdnjs.cloudflare.com"],
+      fontSrc: ["'self'", "https://cdnjs.cloudflare.com"],
+      objectSrc: ["'none'"],
+      upgradeInsecureRequests: [],
+    },
+  })
+);
 
 // CORS configuration
 app.use(cors({
@@ -36,6 +47,14 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads"), {
   }
 }));
 
+app.use(express.static(path.join(__dirname,'../FrontEnd/dist')))
+app.use((req, res, next) => {
+  if (req.method === "GET" && !req.path.startsWith("/api")) {
+    res.sendFile(path.resolve(__dirname, '../FrontEnd/dist/index.html'));
+  } else {
+    next();
+  }
+});
 // Routes
 app.use("/api/auth", userRouter);
 app.use("/api/resume", resumeRouter);
