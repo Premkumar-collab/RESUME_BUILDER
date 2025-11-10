@@ -20,21 +20,32 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "https://cdnjs.cloudflare.com"],
-        styleSrc: ["'self'", "https://cdnjs.cloudflare.com"],
-        fontSrc: ["'self'", "https://cdnjs.cloudflare.com"],
+        scriptSrc: ["'self'", "https://cdnjs.cloudflare.com", "'unsafe-inline'"],
+        styleSrc: [
+          "'self'",
+          "https://cdnjs.cloudflare.com",
+          "https://fonts.googleapis.com",
+          "'unsafe-inline'"
+        ],
+        fontSrc: ["'self'", "https://fonts.gstatic.com"],
+        connectSrc: ["'self'", "http://localhost:4000", "https://resume-builder-tcde.onrender.com"],
+        imgSrc: ["'self'", "data:", "blob:"],
         objectSrc: ["'none'"],
         upgradeInsecureRequests: [],
-        connectSrc: ["'self'", "http://localhost:4000"],
       },
     },
   })
 );
 // CORS configuration
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://resume-builder-tcde.onrender.com",
+    ],
+    credentials: true,
+  })
+);
 
 // Logging
 app.use(morgan("dev"));
@@ -43,16 +54,19 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 // Static file serving with CORS headers
-app.use("/uploads", express.static(path.join(__dirname, "uploads"), {
-  setHeaders: (res, _path) => {
-    res.set("Access-Control-Allow-Origin", "http://localhost:5173");
-  }
-}));
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "uploads"), {
+    setHeaders: (res, _path) => {
+      res.set("Access-Control-Allow-Origin", "http://localhost:5173");
+    },
+  })
+);
 
-app.use(express.static(path.join(__dirname,'../FrontEnd/dist')))
+app.use(express.static(path.join(__dirname, "../FrontEnd/dist")));
 app.use((req, res, next) => {
   if (req.method === "GET" && !req.path.startsWith("/api")) {
-    res.sendFile(path.resolve(__dirname, '../FrontEnd/dist/index.html'));
+    res.sendFile(path.resolve(__dirname, "../FrontEnd/dist/index.html"));
   } else {
     next();
   }
