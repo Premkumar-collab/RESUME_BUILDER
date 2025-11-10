@@ -16,18 +16,20 @@ const app = express();
 
 // Security headers
 app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "https://cdnjs.cloudflare.com"],
-      styleSrc: ["'self'", "https://cdnjs.cloudflare.com"],
-      fontSrc: ["'self'", "https://cdnjs.cloudflare.com"],
-      objectSrc: ["'none'"],
-      upgradeInsecureRequests: [],
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "https://cdnjs.cloudflare.com"],
+        styleSrc: ["'self'", "https://cdnjs.cloudflare.com"],
+        fontSrc: ["'self'", "https://cdnjs.cloudflare.com"],
+        objectSrc: ["'none'"],
+        upgradeInsecureRequests: [],
+        connectSrc: ["'self'", "http://localhost:4000"],
+      },
     },
   })
 );
-
 // CORS configuration
 app.use(cors({
   origin: "http://localhost:5173",
